@@ -1,5 +1,9 @@
-﻿using ECommerce.Infrastructure.Data;
+﻿using ECommerce.Domain.Contracts;
+using ECommerce.Infrastructure.Data;
+using ECommerce.Infrastructure.DataSeeding;
+using ECommerce.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,6 +23,8 @@ namespace ECommerce.Infrastructure
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             }
             );
+            services.AddKeyedScoped<IDataSeeder, CatalogDataSeeder>("Catalog");
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
