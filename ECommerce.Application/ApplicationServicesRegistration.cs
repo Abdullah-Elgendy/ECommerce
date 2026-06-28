@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Contracts;
+using ECommerce.Application.Profiles;
 using ECommerce.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
