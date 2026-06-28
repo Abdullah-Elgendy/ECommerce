@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Application.Common
+﻿using System.Text.Json.Serialization;
+
+namespace ECommerce.Application.Common
 {
     public record Error(string Code, string Description, ErrorType errorType = ErrorType.Failure)
     {
@@ -12,6 +14,7 @@
 
     }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ErrorType
     {
         Failure = 0,
