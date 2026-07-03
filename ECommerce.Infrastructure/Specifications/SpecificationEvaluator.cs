@@ -13,20 +13,22 @@ namespace ECommerce.Infrastructure.Specifications
     {
         public static IQueryable<TEntity> CreateQuery<TEntity, TKey>(IQueryable<TEntity> inputQuery, ISpecifications<TEntity, TKey> spec) where TEntity : BaseEntity<TKey> 
         {
+            //dbContext.Set<TEntity>()
             var query = inputQuery;
+
+            //add criteria if it's not null
+            if(spec.Criteria != null)
+            {
+                query.Where(spec.Criteria);
+            }
+
 
             //add includes if any exist in specifications
             if (spec.IncludeExpressions.Any())
             {
-                //Method 1: Using ForEach()
-                //    foreach (var expression in spec.IncludeExpressions)
-                //    {
-                //        query.Include(expression);
-                //    }
-
-                //Method 2: Using .Aggregate()
                 query = spec.IncludeExpressions.Aggregate(query, (current, nextExp) => current.Include(nextExp));
             }
+
 
             return query;
         }

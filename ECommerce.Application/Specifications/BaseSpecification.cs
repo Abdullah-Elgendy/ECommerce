@@ -12,7 +12,13 @@ namespace ECommerce.Application.Specifications
     internal abstract class BaseSpecification<TEntity, TKey> : ISpecifications<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
         public ICollection<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
-        public Expression<Func<TEntity, bool>> Criteria { get; }
+        public Expression<Func<TEntity, bool>> Criteria { get; private set; }
+
+        //Child classes that inherit BaseSpecification will be able to pass criteria to the constructor
+        protected BaseSpecification(Expression<Func<TEntity, bool>> criteria)
+        {
+            Criteria = criteria;
+        }
 
         //Helper Method to add expression to IncludeExpressions
         protected void AddInclude(Expression<Func<TEntity,Object>> include)

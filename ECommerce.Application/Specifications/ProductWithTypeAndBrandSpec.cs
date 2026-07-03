@@ -10,10 +10,18 @@ namespace ECommerce.Application.Specifications
     internal class ProductWithTypeAndBrandSpec : BaseSpecification<Product, int>
     {
         //Get All Products
-        public ProductWithTypeAndBrandSpec()
+        public ProductWithTypeAndBrandSpec() : base(null)
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
+        }
+
+        //Get By Id
+        public ProductWithTypeAndBrandSpec(int id) : base(x => x.Id == id)
+        {
+            AddInclude(p => p.ProductType);
+            AddInclude(p => p.ProductBrand);
+
         }
     }
 }

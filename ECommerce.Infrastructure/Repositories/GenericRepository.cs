@@ -22,10 +22,20 @@ namespace ECommerce.Infrastructure.Repositories
 
         public async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken ct = default) => await context.Set<TEntity>().FindAsync(id, ct);
 
+
+
+        #region Specification Methods
         public async Task<IReadOnlyList<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> spec, CancellationToken ct = default)
         {
             var query = SpecificationEvaluator.CreateQuery(context.Set<TEntity>(), spec);
             return await query.ToListAsync(ct);
         }
+
+        public async Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, TKey> spec, CancellationToken ct = default)
+        {
+            var query = SpecificationEvaluator.CreateQuery(context.Set<TEntity>(), spec);
+            return await query.FirstOrDefaultAsync();
+        } 
+        #endregion
     }
 }
