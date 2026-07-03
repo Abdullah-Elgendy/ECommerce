@@ -2,6 +2,7 @@
 using ECommerce.Application.Common;
 using ECommerce.Application.Contracts;
 using ECommerce.Application.DTOs.Products;
+using ECommerce.Application.Specifications;
 using ECommerce.Domain.Contracts;
 using ECommerce.Domain.Entities.Products;
 using System;
@@ -23,7 +24,8 @@ namespace ECommerce.Application.Services
 
         public async Task<Result<IReadOnlyList<ProductDto>>> GetAllProductsAsync(CancellationToken ct = default)
         {
-            var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(ct);
+            var spec = new ProductWithTypeAndBrandSpec();
+            var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync(spec, ct);
             var mappedData = mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
             return Result<IReadOnlyList<ProductDto>>.Ok(mappedData);
         }
