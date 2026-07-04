@@ -10,9 +10,9 @@ namespace ECommerce.API.Controllers
     {
         //Get all products
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts(int? BrandId, int? TypeId ,CancellationToken ct = default)
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts([FromQuery]ProductQueryParams queryParams,CancellationToken ct = default)
         {
-            var result = await productService.GetAllProductsAsync(BrandId, TypeId ,ct);
+            var result = await productService.GetAllProductsAsync(queryParams ,ct);
             return ToActionResult(result);
         }
 
