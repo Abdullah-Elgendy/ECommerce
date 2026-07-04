@@ -19,7 +19,7 @@ namespace ECommerce.Infrastructure.Specifications
             //add criteria if it's not null
             if(spec.Criteria != null)
             {
-                query.Where(spec.Criteria);
+               query =  query.Where(spec.Criteria);
             }
 
 
