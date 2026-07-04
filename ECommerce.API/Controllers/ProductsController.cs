@@ -10,7 +10,7 @@ namespace ECommerce.API.Controllers
     {
         //Get all products
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts([FromQuery]ProductQueryParams queryParams,CancellationToken ct = default)
+        public async Task<ActionResult<PaginatedResult<ProductDto>>> GetProducts([FromQuery]ProductQueryParams queryParams,CancellationToken ct = default)
         {
             var result = await productService.GetAllProductsAsync(queryParams ,ct);
             return ToActionResult(result);
