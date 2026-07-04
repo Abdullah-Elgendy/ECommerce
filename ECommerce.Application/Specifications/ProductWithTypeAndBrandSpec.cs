@@ -36,7 +36,10 @@ namespace ECommerce.Application.Specifications
                 default:
                     AddOrderBy(p => p.Id);
                     break;
-            };
+            }
+
+            ApplyPagination(queryParams.PageSize, queryParams.PageIndex);
+
         }
 
         //Get By Id

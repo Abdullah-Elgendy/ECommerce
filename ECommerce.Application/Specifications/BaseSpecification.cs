@@ -12,11 +12,18 @@ namespace ECommerce.Application.Specifications
     internal abstract class BaseSpecification<TEntity, TKey> : ISpecifications<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
         public ICollection<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
+       
         public Expression<Func<TEntity, bool>> Criteria { get; private set; }
 
         public Expression<Func<TEntity, object>>? OrderBy { get; private set; }
 
         public Expression<Func<TEntity, object>>? OrderByDesc { get; private set; }
+
+        public int Take { get; private set;  }
+
+        public int Skip { get; private set; }
+
+        public bool isPaginated { get; private set; }
 
         //Child classes that inherit BaseSpecification will be able to pass criteria to the constructor
         protected BaseSpecification(Expression<Func<TEntity, bool>> criteria)
@@ -24,7 +31,7 @@ namespace ECommerce.Application.Specifications
             Criteria = criteria;
         }
 
-        //Helper Methods to add expressions
+        //Helper Methods to add expressions / apply pagination
         protected void AddInclude(Expression<Func<TEntity,Object>> includeExpression)
         {
             IncludeExpressions.Add(includeExpression);
@@ -36,6 +43,15 @@ namespace ECommerce.Application.Specifications
         protected void AddOrderByDesc(Expression<Func<TEntity,Object>> orderByDescExpression)
         {
             OrderByDesc = (orderByDescExpression);
+        }
+
+        protected void ApplyPagination(int pageSize, int pageIndex)
+        {
+            isPaginated = true;
+
+            Take = pageSize;
+            Skip = (pageIndex - 1) * pageSize;
+
         }
 
     }

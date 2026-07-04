@@ -39,6 +39,11 @@ namespace ECommerce.Infrastructure.Specifications
                 query = query.OrderByDescending(spec.OrderByDesc);
             }
 
+            //if isPaginated is true then paginate result, must come after filtering and ordering.
+            if(spec.isPaginated)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
+            }
 
             return query;
         }
