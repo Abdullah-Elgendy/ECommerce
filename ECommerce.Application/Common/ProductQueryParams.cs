@@ -11,5 +11,9 @@ namespace ECommerce.Application.Common
         public int? BrandId { get; set; }
         public int? TypeId { get; set; }
         public string? SearchValue { get; set; }
+        public ProductSortingOptions Sort { get; set; }
+
     }
+
+
 }

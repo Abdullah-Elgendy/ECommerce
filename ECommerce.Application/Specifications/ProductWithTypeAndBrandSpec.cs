@@ -18,14 +18,32 @@ namespace ECommerce.Application.Specifications
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
+
+            switch(queryParams.Sort)
+            {
+                case ProductSortingOptions.NameAsc:
+                    AddOrderBy(p => p.Name);
+                    break;
+                case ProductSortingOptions.NameDesc:
+                    AddOrderByDesc(p => p.Name);
+                    break;
+                case ProductSortingOptions.PriceAsc:
+                    AddOrderBy(p => p.Price);
+                    break;
+                case ProductSortingOptions.PriceDesc:
+                    AddOrderByDesc(p => p.Price);
+                    break;
+                default:
+                    AddOrderBy(p => p.Id);
+                    break;
+            };
         }
 
         //Get By Id
-        public ProductWithTypeAndBrandSpec(int id) : base(x => x.Id == id)
+        public ProductWithTypeAndBrandSpec(int id) : base(p => p.Id == id)
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
-
         }
 
     }

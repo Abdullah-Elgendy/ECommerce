@@ -29,6 +29,16 @@ namespace ECommerce.Infrastructure.Specifications
                 query = spec.IncludeExpressions.Aggregate(query, (current, nextExp) => current.Include(nextExp));
             }
 
+            //add order by / order by desc if it's not null (order doesn't matter before or after include)
+            if(spec.OrderBy != null)
+            {
+                query = query.OrderBy(spec.OrderBy);
+            }
+            else if(spec.OrderByDesc != null)
+            {
+                query = query.OrderByDescending(spec.OrderByDesc);
+            }
+
 
             return query;
         }
