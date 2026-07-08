@@ -1,4 +1,5 @@
-﻿using ECommerce.Application.Common;
+﻿using ECommerce.API.Attributes;
+using ECommerce.Application.Common;
 using ECommerce.Application.Contracts;
 using ECommerce.Application.DTOs.Baskets;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,7 @@ namespace ECommerce.API.Controllers
 
         //GET BaseUrl/Api.Baskets/Id
         [HttpGet("{id}")]
+        [RedisCache(90)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(BasketDto),StatusCodes.Status200OK)]
         public async Task<ActionResult<BasketDto>> GetBasketByIdAsync(string id, CancellationToken ct = default)
@@ -25,7 +27,7 @@ namespace ECommerce.API.Controllers
             return ToActionResult(res);
         }
 
-        //PSOT BasketUrl/Api/Baskets -> body with {BasketDto}
+        //POST BasketUrl/Api/Baskets -> body with {BasketDto}
         [HttpPost]
         public async Task<ActionResult<BasketDto>> CreateOrUpdateBasketAsync (BasketDto basket, CancellationToken ct)
         {

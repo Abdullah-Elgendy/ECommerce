@@ -28,6 +28,7 @@ namespace ECommerce.Infrastructure
             services.AddKeyedScoped<IDataSeeder, CatalogDataSeeder>("Catalog");
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddSingleton<ICacheRepository, CacheRepository>();
             //Remember: scoped = per request, once done it is deleted.
             //singleton = one object through application lifetime, deleted once application closes.
 
