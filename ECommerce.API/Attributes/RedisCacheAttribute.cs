@@ -57,7 +57,6 @@ namespace ECommerce.API.Attributes
 
             if (request.Query.Any())
             {
-
                 key.Append('?');
                 foreach (var queryItem in request.Query.OrderBy(x => x.Key))
                 { 

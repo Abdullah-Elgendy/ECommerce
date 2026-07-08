@@ -21,7 +21,7 @@ namespace ECommerce.Application.Services
 
         public async Task SetDataAsync(string cacheKey, object cacheValue, TimeSpan? duration = null, CancellationToken ct = default)
         {
-            var serializedValue = JsonSerializer.Serialize(cacheValue);
+            var serializedValue = JsonSerializer.Serialize(cacheValue, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase } );
             await _cacheRepository.SetAsync(cacheKey ,serializedValue, duration, ct);
         }
     }
