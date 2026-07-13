@@ -75,5 +75,14 @@ namespace ECommerce.Application.Services
             });
             
         }
+   
+        public async Task<Result<bool>> CheckEmailExistsAsync(string email, CancellationToken ct = default)
+        {
+            var result = await _identityService.FindUserByEmailAsync(email, ct);
+            if (!result.IsSuccess)
+                return Result<bool>.Fail(result.Errors);
+
+            return Result<bool>.Ok(result.IsSuccess);
+        }
     }
 }

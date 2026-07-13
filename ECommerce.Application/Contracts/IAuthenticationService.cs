@@ -12,7 +12,7 @@ namespace ECommerce.Application.Contracts
     {
         //Login (take email + password) -> (return token, email, and display name in DTO)
         Task<Result<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken ct = default);
-
         Task<Result<UserDto>> RegisterAsync(RegisterDto registerDto, CancellationToken ct = default);
+        Task<Result<bool>> CheckEmailExistsAsync(string email, CancellationToken ct = default);
     }
 }

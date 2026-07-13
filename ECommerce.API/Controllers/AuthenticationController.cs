@@ -30,5 +30,15 @@ namespace ECommerce.API.Controllers
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto, CancellationToken ct = default)
             => ToActionResult(await _authenticationService.RegisterAsync(registerDto, ct));
+
+        //EmailExists
+        [HttpGet("EmailExists/{email}")]
+        public async Task<ActionResult<bool>> CheckEmailExists(string email, CancellationToken ct = default)
+        {
+            var result = await _authenticationService.CheckEmailExistsAsync(email, ct);
+            return ToActionResult(result);
+        }
+
+
     }
 }
