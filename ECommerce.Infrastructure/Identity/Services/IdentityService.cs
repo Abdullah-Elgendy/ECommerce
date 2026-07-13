@@ -26,7 +26,7 @@ namespace ECommerce.Infrastructure.Identity.Services
             if (user == null)
                 return Result<IdentityUserResult>.Fail(Error.NotFound("User.NotFound", $"User wil email {email} is not found"));
             else
-                return Result<IdentityUserResult>.Ok(new IdentityUserResult(user.Id, user.DisplayName, user.UserName!, user.Email!));
+                return Result<IdentityUserResult>.Ok(new IdentityUserResult(user.Id, user.DisplayName, user.Email!, user.UserName!));
 
         }
 
@@ -62,6 +62,17 @@ namespace ECommerce.Infrastructure.Identity.Services
 
 
             return Result<IdentityUserResult>.Ok(new IdentityUserResult(user.Id, user.DisplayName, user.UserName, user.Email));
+        }
+
+        public async Task<Result<IReadOnlyList<string>>> GetUserRolesAsync(string email, CancellationToken ct = default)
+        {
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return Result<IReadOnlyList<string>>.Fail(Error.NotFound("User.NotFound", $"User wil email {email} is not found"));
+
+            var res = await _userManager.GetRolesAsync(user);
+            return Result<IReadOnlyList<string>>.Ok(res.ToList());
         }
     }
 }

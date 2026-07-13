@@ -13,10 +13,12 @@ namespace ECommerce.Application.Services
     internal class AuthenticationService : IAuthenticationService
     {
         private readonly IIdentityService _identityService;
+        private readonly ITokenService _tokenService;
 
-        public AuthenticationService(IIdentityService identityService)
+        public AuthenticationService(IIdentityService identityService, ITokenService tokenService)
         {
             _identityService = identityService;
+            _tokenService = tokenService;
         }
 
         public async Task<Result<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken ct = default)
@@ -40,14 +42,15 @@ namespace ECommerce.Application.Services
             }
 
             //Generate JWT Token
-
+            var roles = await _identityService.GetUserRolesAsync(userResult.Value.Email, ct);
+            var token = _tokenService.CreateToken(userResult.Value.Id, userResult.Value.Email, userResult.Value.UserName, roles.Value);
 
             //Return result 
             return new UserDto()
             {
                 Email = loginDto.Email,
                 DisplayName = userResult.Value.DisplayName,
-                Token = "TODO"
+                Token = token
             };
 
         }
@@ -59,13 +62,16 @@ namespace ECommerce.Application.Services
             {
                 return Result<UserDto>.Fail(userRes.Errors);
             }
+
             var user = userRes.Value;
 
+            var roles = await _identityService.GetUserRolesAsync(user.Email, ct);
+            var token = _tokenService.CreateToken(user.Id, user.Email, user.UserName, roles.Value);
             return Result<UserDto>.Ok(new UserDto()
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = "TODO"
+                Token = token
             });
             
         }

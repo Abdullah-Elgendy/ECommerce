@@ -1,6 +1,7 @@
 ﻿using ECommerce.Application.Common;
 using ECommerce.Application.Contracts;
 using ECommerce.Application.DTOs.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace ECommerce.API.Controllers
     {
         //Get all products
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<PaginatedResult<ProductDto>>> GetProducts([FromQuery]ProductQueryParams queryParams,CancellationToken ct = default)
         {
             var result = await productService.GetAllProductsAsync(queryParams ,ct);
@@ -20,6 +22,7 @@ namespace ECommerce.API.Controllers
         //Get product by id
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<ActionResult<ProductDto>> GetProduct(int id, CancellationToken ct = default)
         {
             var result = await productService.GetProductByIdAsync(id, ct);
@@ -29,6 +32,7 @@ namespace ECommerce.API.Controllers
 
         //Get all types
         [HttpGet("types")]
+        [Authorize]
         public async Task<ActionResult<IReadOnlyList<TypeDto>>> GetTypes(CancellationToken ct = default)
         {
             var result = await productService.GetAllTypesAsync(ct);
@@ -38,6 +42,7 @@ namespace ECommerce.API.Controllers
 
         //Get all brands
         [HttpGet("brands")]
+        [Authorize]
         public async Task<ActionResult<IReadOnlyList<BrandDto>>> GetBrands(CancellationToken ct = default)
         {
             var result = await productService.GetAllBrandsAsync(ct);

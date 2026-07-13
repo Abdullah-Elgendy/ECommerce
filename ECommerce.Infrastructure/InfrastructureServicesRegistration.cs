@@ -6,11 +6,14 @@ using ECommerce.Infrastructure.DataSeeding;
 using ECommerce.Infrastructure.Identity.Data;
 using ECommerce.Infrastructure.Identity.Services;
 using ECommerce.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -50,6 +53,28 @@ namespace ECommerce.Infrastructure
 
             services.AddScoped<IIdentityService, IdentityService>();
 
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddAuthentication(
+                opt =>
+                {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(opt =>
+
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = "https://localhost:7220",
+                    ValidateAudience = true,
+                    ValidAudience = "MyApp",
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MYSECUirtyKeyForAuthENTICATIONMYSECUirtyKeyForAuthENTICATIONMYSECUirtyKeyForAuthENTICATION"))
+                });
+
+
+
             services.AddSingleton<ICacheRepository, CacheRepository>();
             //Remember: scoped = per request, once done it is deleted.
             //singleton = one object through application lifetime, deleted once application closes.
@@ -63,6 +88,8 @@ namespace ECommerce.Infrastructure
             {
                 return ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")!);
             });
+
+
 
             return services;
         }
