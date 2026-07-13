@@ -14,14 +14,21 @@ namespace ECommerce.API.Controllers
         {
             _authenticationService = authenticationService;
         }
+
         //Login
         [HttpPost("Login")]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
-            => ToActionResult(await _authenticationService.LoginAsync(loginDto));
-        
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto, CancellationToken ct = default)
+            => ToActionResult(await _authenticationService.LoginAsync(loginDto, ct));
 
+
+        //Register
+        [HttpPost("Register")]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status406NotAcceptable)]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto, CancellationToken ct = default)
+            => ToActionResult(await _authenticationService.RegisterAsync(registerDto, ct));
     }
 }

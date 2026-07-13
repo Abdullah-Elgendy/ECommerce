@@ -11,6 +11,8 @@ namespace ECommerce.Application.Contracts
     public interface IAuthenticationService
     {
         //Login (take email + password) -> (return token, email, and display name in DTO)
-        Task<Result<UserDto>> LoginAsync(LoginDto logindto, CancellationToken ct = default);
+        Task<Result<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken ct = default);
+
+        Task<Result<UserDto>> RegisterAsync(RegisterDto registerDto, CancellationToken ct = default);
     }
 }
