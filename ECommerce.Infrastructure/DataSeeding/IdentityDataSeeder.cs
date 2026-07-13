@@ -58,7 +58,7 @@ namespace ECommerce.Infrastructure.DataSeeding
                         PhoneNumber = "01349283992"
                     };
 
-                    var createResult = await _userManager.CreateAsync(superAdmin, "P@ssword");
+                    var createResult = await _userManager.CreateAsync(superAdmin, "P@ssword123");
                     if (createResult.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(superAdmin, "SuperAdmin");

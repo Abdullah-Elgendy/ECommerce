@@ -4,6 +4,7 @@ using ECommerce.Domain.Entities.Identity;
 using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.DataSeeding;
 using ECommerce.Infrastructure.Identity.Data;
+using ECommerce.Infrastructure.Identity.Services;
 using ECommerce.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,7 @@ namespace ECommerce.Infrastructure
 
             services.AddKeyedScoped<IDataSeeder, CatalogDataSeeder>("Catalog");
             services.AddKeyedScoped<IDataSeeder, IdentityDataSeeder>("Identity");
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddIdentityCore<ApplicationUser>()
@@ -45,6 +47,9 @@ namespace ECommerce.Infrastructure
                 .AddEntityFrameworkStores<StoreIdentityDbContext>();
 
             services.AddScoped<IBasketRepository, BasketRepository>();
+
+            services.AddScoped<IIdentityService, IdentityService>();
+
             services.AddSingleton<ICacheRepository, CacheRepository>();
             //Remember: scoped = per request, once done it is deleted.
             //singleton = one object through application lifetime, deleted once application closes.
