@@ -3,7 +3,9 @@ using ECommerce.API.Extensions;
 using ECommerce.Application;
 using ECommerce.Application.Profiles;
 using ECommerce.Domain.Contracts;
+using ECommerce.Domain.Entities.Identity;
 using ECommerce.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
 namespace ECommerce.API

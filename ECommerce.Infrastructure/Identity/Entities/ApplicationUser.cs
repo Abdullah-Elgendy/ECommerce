@@ -11,7 +11,7 @@ namespace ECommerce.Domain.Entities.Identity
     {
         //Id is inherited from IdentityUser, it's a string GUID
 
-        public int DisplayName { get; set; } = default!;
+        public string DisplayName { get; set; } = default!;
 
 
     }

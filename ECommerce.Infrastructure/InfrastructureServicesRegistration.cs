@@ -1,9 +1,11 @@
 ﻿using ECommerce.Application.Contracts;
 using ECommerce.Domain.Contracts;
+using ECommerce.Domain.Entities.Identity;
 using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.DataSeeding;
 using ECommerce.Infrastructure.Identity.Data;
 using ECommerce.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Configuration;
@@ -21,13 +23,13 @@ namespace ECommerce.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<StoreDbContext>(options => 
+            services.AddDbContext<StoreDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             }
             );
 
-            services.AddDbContext<StoreIdentityDbContext>(options => 
+            services.AddDbContext<StoreIdentityDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
             }
@@ -35,7 +37,13 @@ namespace ECommerce.Infrastructure
 
 
             services.AddKeyedScoped<IDataSeeder, CatalogDataSeeder>("Catalog");
+            services.AddKeyedScoped<IDataSeeder, IdentityDataSeeder>("Identity");
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddIdentityCore<ApplicationUser>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddSingleton<ICacheRepository, CacheRepository>();
             //Remember: scoped = per request, once done it is deleted.
