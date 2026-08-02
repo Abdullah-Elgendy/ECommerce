@@ -30,13 +30,13 @@ namespace ECommerce.Application.Services
 
             //Verify Password
             var passwordResult = await _identityService.CheckUserPasswordAsync(loginDto.Email, loginDto.Password);
-            
+
             //if CheckUserPassword returns Fail
             if (!passwordResult.IsSuccess)
                 return Result<UserDto>.Fail(userResult.Errors);
 
             //if CheckUserPassword returns Ok but Value is false
-            if(!passwordResult.Value)
+            if (!passwordResult.Value)
             {
                 return Result<UserDto>.Fail(Error.Unauthorized("Invalid.Data", "Invalid Email Or Password"));
             }
@@ -73,9 +73,9 @@ namespace ECommerce.Application.Services
                 Email = user.Email,
                 Token = token
             });
-            
+
         }
-   
+
         public async Task<Result<bool>> CheckEmailExistsAsync(string email, CancellationToken ct = default)
         {
             var result = await _identityService.FindUserByEmailAsync(email, ct);
@@ -83,6 +83,34 @@ namespace ECommerce.Application.Services
                 return Result<bool>.Fail(result.Errors);
 
             return Result<bool>.Ok(result.IsSuccess);
+        }
+
+        public async Task<Result<AddressDto>> GetUserAddressAsync(string email, CancellationToken ct = default)
+        {
+            //in any case, we will always return a Result<AddressDto> we don't have to check for anything because
+            //a user may or may not have an address, so all we need is the result.
+            return await _identityService.GetUserAddressByEmailAsync(email, ct);
+        }
+
+        public async Task<Result<UserDto>> GetCurrentUserAsync(string email, CancellationToken ct = default)
+        {
+            var userResult = await _identityService.FindUserByEmailAsync(email, ct);
+            var user = userResult.Value;
+            var userRoles = await _identityService.GetUserRolesAsync(user.Email);
+            var token = _tokenService.CreateToken(user.Id, user.Email, user.UserName, userRoles.Value);
+
+
+            return Result<UserDto>.Ok(new UserDto()
+            {
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                Token = token
+            });
+        }
+
+        public Task<Result<AddressDto>> UpSertUserAddressAsync(string email, AddressDto addressDto, CancellationToken ct = default)
+        {
+           return _identityService.UpSertUserAddresAsync(email, addressDto, ct);
         }
     }
 }

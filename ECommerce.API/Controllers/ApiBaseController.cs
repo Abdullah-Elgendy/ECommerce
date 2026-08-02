@@ -1,5 +1,6 @@
 ﻿using ECommerce.Application.Common;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ECommerce.API.Controllers
 {
@@ -50,6 +51,11 @@ namespace ECommerce.API.Controllers
             };
 
             return new ObjectResult(problem) {StatusCode = statusCode };
+        }
+
+        protected string GetEmailFromToken()
+        {
+            return User.FindFirst(ClaimTypes.Email)?.Value ?? throw new UnauthorizedAccessException("Unable To Retrieve Email Claim!");
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using ECommerce.Application.Contracts;
 using ECommerce.Application.DTOs.Identity;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ECommerce.API.Controllers
 {
@@ -39,6 +40,22 @@ namespace ECommerce.API.Controllers
             return ToActionResult(result);
         }
 
+        [Authorize]
+        [HttpGet("CurrentUser")]
+        public async Task<ActionResult<UserDto>> GetCurrentUser(CancellationToken ct = default)
+            => ToActionResult(await _authenticationService.GetCurrentUserAsync(GetEmailFromToken(), ct));
+
+
+
+        [Authorize]
+        [HttpGet("UserAddress")]
+        public async Task<ActionResult<AddressDto>> GetUserAddress(CancellationToken ct = default)
+            => ToActionResult(await _authenticationService.GetUserAddressAsync(GetEmailFromToken(), ct));
+
+        [Authorize]
+        [HttpPut("UpdateAddress")]
+        public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto addressDto, CancellationToken ct = default)
+          => ToActionResult(await _authenticationService.UpSertUserAddressAsync(GetEmailFromToken(), addressDto, ct));
 
     }
 }

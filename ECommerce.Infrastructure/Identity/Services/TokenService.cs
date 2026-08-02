@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Contracts;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,12 @@ namespace ECommerce.Infrastructure.Identity.Services
 
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public void DecodeToken(string token)
+        {
+            var decodedToken = new JwtSecurityTokenHandler().ReadToken(token);
+            Console.WriteLine(decodedToken);
         }
     }
 }

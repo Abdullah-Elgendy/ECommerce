@@ -9,5 +9,6 @@ namespace ECommerce.Application.Contracts
     public interface ITokenService
     {
         string CreateToken(string userId, string email, string userName, IReadOnlyList<string> roles);
+        void DecodeToken(string token);
     }
 }

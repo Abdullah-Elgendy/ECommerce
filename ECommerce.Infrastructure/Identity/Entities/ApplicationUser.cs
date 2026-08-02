@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ECommerce.Infrastructure.Identity.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace ECommerce.Domain.Entities.Identity
 
         public string DisplayName { get; set; } = default!;
 
-
+        public Address? Address { get; set; }
     }
 }

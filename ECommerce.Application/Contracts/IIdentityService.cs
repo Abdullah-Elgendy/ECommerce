@@ -14,5 +14,7 @@ namespace ECommerce.Application.Contracts
         Task<Result<bool>> CheckUserPasswordAsync(string email, string password, CancellationToken ct = default);
         Task<Result<IdentityUserResult>> RegisterUserAsync(RegisterDto registerDto, CancellationToken ct = default);
         Task<Result<IReadOnlyList<string>>> GetUserRolesAsync(string email, CancellationToken ct = default);
+        Task<Result<AddressDto>> GetUserAddressByEmailAsync(string email, CancellationToken ct = default);
+        Task<Result<AddressDto>> UpSertUserAddresAsync(string email, AddressDto addressDto, CancellationToken ct = default);
     }
 }
