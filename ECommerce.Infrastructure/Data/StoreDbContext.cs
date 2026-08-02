@@ -1,4 +1,5 @@
-﻿using ECommerce.Domain.Entities.Products;
+﻿using ECommerce.Domain.Entities.Orders;
+using ECommerce.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,9 @@ namespace ECommerce.Infrastructure.Data
         DbSet<Product> Products { get; set; }
         DbSet<ProductType> ProductTypes { get; set; }
         DbSet<ProductBrand> ProductBrands { get; set; }
+        DbSet<Order> Orders { get; set; }
+        //we don't need dbset for order items because we will load them from Orders.
+        DbSet<DeliveryMethod> DeliveryMethods { get; set; }
 
-        
     }
 }

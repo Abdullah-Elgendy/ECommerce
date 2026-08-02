@@ -1,5 +1,6 @@
 ﻿using ECommerce.Domain.Common;
 using ECommerce.Domain.Contracts;
+using ECommerce.Domain.Entities.Orders;
 using ECommerce.Domain.Entities.Products;
 using ECommerce.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +29,10 @@ namespace ECommerce.Infrastructure.DataSeeding
 
                 var seedRoot = Path.Combine(AppContext.BaseDirectory, "DataSeed");
 
-                await SeedIfEmptyAsync<ProductBrand, int>(seedRoot, "brands.json");
-                await SeedIfEmptyAsync<ProductType, int>(seedRoot, "types.json");
-                await SeedIfEmptyAsync<Product, int>(seedRoot, "products.json");
+                await SeedIfEmptyAsync<ProductBrand, int>(seedRoot, "brands.json", ct);
+                await SeedIfEmptyAsync<ProductType, int>(seedRoot, "types.json", ct);
+                await SeedIfEmptyAsync<Product, int>(seedRoot, "products.json", ct);
+                await SeedIfEmptyAsync<DeliveryMethod, int>(seedRoot, "delivery.json", ct);
 
                 var res = await dbcontext.SaveChangesAsync(ct);
 
