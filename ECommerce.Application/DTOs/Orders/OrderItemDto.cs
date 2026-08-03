@@ -1,19 +1,14 @@
-﻿using ECommerce.Domain.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Domain.Entities.Baskets
+namespace ECommerce.Application.DTOs.Orders
 {
-
-    //we won't inherit from base entity
-    //because this class will NOT be mapped in the database
-    //it will be stored in Memory Database
-    public class BasketItem
+    public class OrderItemDto
     {
-        public int Id { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; } = default!;
         public string PictureUrl { get; set; } = default!;
         public decimal Price { get; set; }

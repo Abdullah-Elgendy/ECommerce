@@ -11,17 +11,19 @@ namespace ECommerce.Domain.Entities.Orders
 {
     public class Order : BaseEntity<Guid>
     {
-        //For EfCore
+        #region Private Parameterless Constructor For EfCore
         private Order()
         {
-            
-        }
 
+        } 
+        #endregion
+
+        #region Constructor For Creating Object In Service
         public Order(string buyerEmail,
-            OrderAddress shippingAddress,
-            ICollection<OrderItem> items,
-            DeliveryMethod deliveryMethod,
-            decimal subTotal)
+        OrderAddress shippingAddress,
+        ICollection<OrderItem> items,
+        DeliveryMethod deliveryMethod,
+        decimal subTotal)
         {
             BuyerEmail = buyerEmail;
             ShippingAddress = shippingAddress;
@@ -30,6 +32,7 @@ namespace ECommerce.Domain.Entities.Orders
             SubTotal = subTotal;
         }
 
+        #endregion
         public string BuyerEmail { get; set; } = default!;
         public OrderAddress ShippingAddress { get; set; } = default!;
         public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
@@ -39,9 +42,6 @@ namespace ECommerce.Domain.Entities.Orders
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public int DeliveryMethodId { get; set; } //FK
         public decimal GetTotal() => SubTotal + (DeliveryMethod?.Cost ?? 0);
-
-
-        
     }
 
 }

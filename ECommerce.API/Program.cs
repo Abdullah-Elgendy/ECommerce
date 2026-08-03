@@ -20,7 +20,6 @@ namespace ECommerce.API
             builder.Services.AddControllers();
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<UrlSettings>(builder.Configuration.GetSection("UrlSettings"));
