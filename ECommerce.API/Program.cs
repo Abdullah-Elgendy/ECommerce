@@ -1,6 +1,7 @@
 
 using ECommerce.API.Extensions;
 using ECommerce.Application;
+using ECommerce.Application.Common;
 using ECommerce.Application.Profiles;
 using ECommerce.Domain.Contracts;
 using ECommerce.Domain.Entities.Identity;
@@ -23,6 +24,7 @@ namespace ECommerce.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<UrlSettings>(builder.Configuration.GetSection("UrlSettings"));
+            builder.Services.Configure<PaymentGatewaySecrets>(builder.Configuration.GetSection("Stripe"));
             var app = builder.Build();
 
             await app.SeedAndMigrateDataAsync();

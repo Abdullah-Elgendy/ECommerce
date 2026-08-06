@@ -11,6 +11,12 @@ namespace ECommerce.Domain.Entities.Baskets
     {
         public string Id { get; set; } = default!; //GUID
         public ICollection<BasketItem> Items { get; set; } = [];
- 
+
+        #region For Payment Module
+        public string? ClientSecret { get; set; }
+        public string? PaymentIntentId { get; set; }
+        public int? DeliveryMethodId { get; set; }
+        public decimal? ShippingPrice { get; set; } 
+        #endregion
     }
 }

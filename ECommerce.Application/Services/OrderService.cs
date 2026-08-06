@@ -37,6 +37,17 @@ namespace ECommerce.Application.Services
             if (!basket.Value.Items.Any() || basket.Value.Items.Count <= 0)
                 return Result<OrderToReturnDto>.Fail(Error.Validation("Basket Is Empty", $"Cannot Create Order, Basket With Id {orderDto.BasketId} Is Empty!"));
 
+            //Check if there's an existing order with the same paymentIntentId, If so then delete it.
+            if (!string.IsNullOrEmpty(basket.Value.PaymentIntentId))
+            {
+                var existingOrderSpec = new OrderWithPaymentIntentSpecifications(basket.Value.PaymentIntentId);
+                var existingOrder = await _unitOfWork.GetRepository<Order, Guid>().GetByIdAsync(existingOrderSpec);
+
+                if (existingOrder != null)
+                    _unitOfWork.GetRepository<Order, Guid>().Remove(existingOrder);
+            }
+
+
             //Get Items from basket
             var orderItems = new List<OrderItem>(basket.Value.Items.Count);
 
@@ -80,7 +91,7 @@ namespace ECommerce.Application.Services
             //We DON'T need to calculate the total because it's automatically calculated.
 
             //Create Order
-            var order = new Order(email, orderAddress, orderItems, deliveryMethod, subtotal);
+            var order = new Order(email, orderAddress, orderItems, deliveryMethod, subtotal, basket.Value.PaymentIntentId! );
 
             _unitOfWork.GetRepository<Order, Guid>().Add(order);
             var res = await _unitOfWork.SaveChangesAsync(ct);

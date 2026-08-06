@@ -5,6 +5,7 @@ using ECommerce.Infrastructure.Data;
 using ECommerce.Infrastructure.DataSeeding;
 using ECommerce.Infrastructure.Identity.Data;
 using ECommerce.Infrastructure.Identity.Services;
+using ECommerce.Infrastructure.Payments;
 using ECommerce.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -90,6 +91,10 @@ namespace ECommerce.Infrastructure
             });
 
 
+            //We use AddSingleton with the payment gateway because the secret key is 'static'
+            //meaning that it's created only once during application startup
+            //so we only need one object throughout our app
+            services.AddSingleton<IPaymentGateway, StripePaymentGateway>();
 
             return services;
         }

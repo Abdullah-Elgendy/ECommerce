@@ -23,16 +23,19 @@ namespace ECommerce.Domain.Entities.Orders
         OrderAddress shippingAddress,
         ICollection<OrderItem> items,
         DeliveryMethod deliveryMethod,
-        decimal subTotal)
+        decimal subTotal,
+        string paymentIntentId)
         {
             BuyerEmail = buyerEmail;
             ShippingAddress = shippingAddress;
             Items = items;
             DeliveryMethod = deliveryMethod;
             SubTotal = subTotal;
+            PaymentIntentId = paymentIntentId;
         }
-
         #endregion
+
+        public string PaymentIntentId { get; set; } = default!;
         public string BuyerEmail { get; set; } = default!;
         public OrderAddress ShippingAddress { get; set; } = default!;
         public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
